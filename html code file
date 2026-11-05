@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bharat Alert: weather and disaster guide</title>
+<style>
+:root{--bg:#fff7ee;--fg:#1b2240;--mute:#5d6485;--card:#fff;--line:#ecdfcd;--pri:#e8590c;--grn:#12805c;--navy:#1b2a5e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1426;--fg:#eef0fa;--mute:#a4abc8;--card:#18203a;--line:#2b3556;--pri:#ff8a3d;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1426;--fg:#eef0fa;--mute:#a4abc8;--card:#18203a;--line:#2b3556;--pri:#ff8a3d;color-scheme:dark}
+html{scroll-padding-top:80px;height:100%}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 "Trebuchet MS",Verdana,system-ui,sans-serif}
+h1,h2,h3,h4{font-family:Georgia,"Times New Roman",serif;margin:0}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:linear-gradient(90deg,#ff9933,#f26b1d 40%,#12805c);color:#fff;box-shadow:0 2px 10px #0004}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:#ff9933;z-index:11}
+.top{display:flex;align-items:center;justify-content:space-between;padding:10px 0 4px;gap:10px}
+.logo{font:700 22px Georgia,serif;display:flex;gap:8px;align-items:center}
+.logo svg{width:28px;height:28px}
+#theme{border:2px solid #fff;background:#0003;color:#fff;border-radius:20px;padding:4px 12px;cursor:pointer;font:600 13px inherit}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;scrollbar-width:none}
+.tabs button{flex:none;border:0;background:#ffffff26;color:#fff;font:700 14px "Trebuchet MS",sans-serif;padding:8px 14px;border-radius:20px;cursor:pointer}
+.tabs button[aria-selected=true]{background:#fff;color:#b8430a}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+.pn{display:none;padding:22px 0 50px}.pn.on{display:block}
+.hero{position:relative;border-radius:22px;overflow:hidden;color:#fff;min-height:300px;background:#1b2a5e}
+.hero svg.bg{position:absolute;inset:0;width:100%;height:100%}
+.hero .in{position:relative;padding:34px 24px 26px;max-width:620px;text-shadow:0 2px 8px #0008}
+.hero h1{font-size:clamp(32px,7vw,56px);line-height:1.05;margin-bottom:12px}
+.hero p{font-size:18px;margin:0 0 16px}
+.btn{display:inline-block;border:0;border-radius:24px;padding:10px 18px;background:#fff;color:#b8430a;font:700 15px "Trebuchet MS",sans-serif;cursor:pointer;margin:0 8px 8px 0;text-decoration:none;text-shadow:none}
+.btn.alt{background:#0005;color:#fff;border:2px solid #fff}
+.note{background:var(--card);border-left:6px solid var(--pri);border-radius:10px;padding:10px 14px;font-size:14px;margin:18px 0}
+h2{font-size:28px;margin:26px 0 4px}.lead{color:var(--mute);margin:0 0 14px}
+.grid{display:grid;gap:14px}
+@media(min-width:700px){.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}}
+.cg{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 2px 8px #0000000d}
+.tiles{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
+.tile{border:0;border-radius:16px;padding:14px 8px;color:#fff;cursor:pointer;font:700 14px "Trebuchet MS",sans-serif;text-align:center}
+.tile svg{width:44px;height:44px;display:block;margin:0 auto 6px}
+svg.ic{fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+select,input[type=search],textarea{font:16px inherit;padding:10px 12px;border:2px solid var(--line);border-radius:12px;background:var(--card);color:var(--fg);width:100%}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:0 0 14px}
+.row select,.row input{flex:1 1 180px;width:auto}
+.chip{border:2px solid var(--line);background:var(--card);color:var(--fg);border-radius:20px;padding:5px 12px;font:600 13px "Trebuchet MS",sans-serif;cursor:pointer}
+.chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.cc{all:unset;cursor:pointer;display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 2px 8px #0000000d;transition:transform .15s}
+.cc:hover{transform:translateY(-3px)}.cc:focus-visible{outline:3px solid var(--pri)}
+.pic{height:110px}.pic svg{width:100%;height:100%;display:block}
+.cb{padding:10px 14px 14px}.cb h3{font-size:20px}.cb p{margin:2px 0 6px;font-size:14px;color:var(--mute)}
+.rg{display:inline-block;color:#fff;border-radius:10px;padding:1px 9px;font:700 11px sans-serif}
+.mini{display:flex;gap:6px;min-height:26px}.mini svg{width:26px;height:26px;padding:3px;border-radius:8px;color:#fff}
+.banner{position:relative;height:190px;border-radius:20px;overflow:hidden;margin:10px 0 16px}
+.banner svg{width:100%;height:100%;display:block}
+.banner div{position:absolute;left:18px;bottom:12px;color:#fff;text-shadow:0 2px 8px #000a}
+.banner h2{margin:0;font-size:36px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+.stat{border-radius:14px;padding:12px;color:#fff}
+.stat b{display:block;font:700 26px Georgia,serif}.stat span{font-size:13px;opacity:.95}
+.chart{width:100%;height:auto;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.chart text{fill:var(--mute);font:10px sans-serif}.chart .gr{stroke:var(--line)}
+.chart .t{fill:none;stroke-width:2.5;stroke-dasharray:5 3}
+.key{font-size:13px;color:var(--mute);margin:6px 0}
+.lg{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin:6px 0}.lg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.risk{display:grid;grid-template-columns:30px 100px 1fr;align-items:center;gap:8px;padding:7px 0;border-top:1px solid var(--line)}
+.risk svg{width:30px;height:30px;padding:4px;border-radius:9px;color:#fff}
+.pips{display:flex;gap:4px;align-items:center;font:700 13px sans-serif}
+.pip{width:20px;height:10px;border-radius:5px;background:var(--line)}.pips span{margin-left:6px}
+.gc h4{font:700 12px sans-serif;letter-spacing:.8px;margin:12px 0 2px}
+.gc ul{margin:0;padding-left:18px;font-size:15px}
+.gh{display:flex;gap:14px;align-items:center;color:#fff;border-radius:16px;padding:16px;margin-bottom:12px}
+.gh svg{width:60px;height:60px;flex:none}.gh p{margin:2px 0 0}
+.bef{border-top:5px solid #2f9e44}.dur{border-top:5px solid #f08c00}.aft{border-top:5px solid #1c7ed6}
+.rad{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.rad button{all:unset;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;display:block}
+.tg{display:inline-block;color:#fff;border-radius:8px;padding:1px 8px;font:700 12px sans-serif;margin:3px 4px 0 0}
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden;font-size:15px}
+td,th{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left}th{background:var(--navy);color:#fff;font-family:Georgia,serif}
+.bars{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px}
+.br{display:grid;grid-template-columns:90px 1fr 80px;gap:8px;align-items:center;font-size:14px;margin:5px 0}
+.br div{height:16px;border-radius:8px}
+.kit{list-style:none;padding:0;margin:0}.kit li{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
+.kit label{display:flex;gap:12px;padding:10px 12px;cursor:pointer}.kit input{width:22px;height:22px;accent-color:var(--grn);flex:none}
+.done span{text-decoration:line-through;color:var(--mute)}
+.prog{height:16px;background:var(--line);border-radius:10px;overflow:hidden;margin:8px 0}.prog div{height:100%;background:linear-gradient(90deg,#ff9933,#12805c);transition:width .3s}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.nums div{border-radius:16px;padding:14px;text-align:center;color:#fff;font-size:14px}.nums b{display:block;font:700 34px Georgia,serif}
+.link{display:inline-block;margin:6px 8px 0 0;padding:9px 14px;border-radius:12px;background:var(--navy);color:#fff;text-decoration:none;font-weight:700;font-size:14px}
+footer{padding:10px 0 50px;font-size:13px;color:var(--mute)}
+</style>
+</head>
+<body>
+<div class="bar"><div class="wrap">
+ <div class="top"><div class="logo"><svg class="ic" viewBox="0 0 48 48" style="stroke:#fff" aria-hidden="true"><path d="M24 4L6 12v12c0 10 8 17 18 20c10-3 18-10 18-20V12z"/><path d="M24 14v12M24 32v2"/></svg>Bharat Alert</div><button id="theme" type="button" aria-label="Switch between light and dark">Light / dark</button></div>
+ <div class="tabs" role="tablist" id="tabs"></div>
+</div></div>
+<main class="wrap">
+<section class="pn" id="p-home">
+ <div class="hero"><svg class="bg" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b2a5e"/><stop offset=".55" stop-color="#e8590c"/><stop offset="1" stop-color="#ffc46b"/></linearGradient></defs><rect width="800" height="320" fill="url(#hg)"/><circle cx="640" cy="190" r="46" fill="#fff3c4"/><path d="M0 250L120 160L200 220L320 130L450 230L560 170L700 240L800 190V320H0z" fill="#2c3a78" opacity=".85"/><path d="M0 285Q100 255 200 280T400 275T600 285T800 270V320H0z" fill="#12805c"/><path d="M0 305Q100 290 200 305T400 300T600 305T800 298V320H0z" fill="#0b5c42"/></svg>
+ <div class="in"><h1>Know your weather.<br>Know your risks.<br>Be ready.</h1><p>Explore 18 places across India: seasonal weather, the disasters each is prone to, and exactly what to do before, during and after.</p><button class="btn" data-go="cities">Explore places</button><button class="btn alt" data-go="ready">Build your kit</button></div></div>
+ <div class="note"><b>Please read.</b> Charts show long-term typical values, rounded, and risk levels are simple learning guides. This app shows no live weather or real warnings. For today’s alerts use the official sources on the Help tab.</div>
+ <h2>Season radar</h2><p class="lead">Pick a month to see which places usually face trouble then.</p>
+ <div class="row"><select id="mon" aria-label="Month"></select></div><div class="rad" id="rad"></div>
+ <h2>Seven hazards</h2><p class="lead">Tap one to open its safety guide.</p><div class="tiles" id="tiles"></div>
+</section>
+
+<section class="pn" id="p-cities">
+ <h2 style="margin-top:0">Weather and risks by place</h2><p class="lead">Search, filter by region or hazard, then open a place.</p>
+ <div id="cfilters"><div class="row"><input type="search" id="q" placeholder="Search a place…" aria-label="Search places"><select id="hf" aria-label="Filter by hazard"></select></div><div class="row" id="rchips"></div></div>
+ <div id="cout"></div>
+</section>
+
+<section class="pn" id="p-compare">
+ <h2 style="margin-top:0">Compare places</h2><p class="lead">Put two places side by side.</p>
+ <div class="row"><select id="ca" aria-label="First place"></select><select id="cb" aria-label="Second place"></select></div>
+ <div id="cmp"></div>
+ <h2>Rank every place</h2><div class="row"><select id="met" aria-label="Metric"><option value="rain">Yearly rainfall</option><option value="hot">Warmest month temperature</option><option value="risk">Overall risk score</option></select></div><div class="bars" id="rank"></div>
+</section>
+
+<section class="pn" id="p-guide">
+ <h2 style="margin-top:0">Disaster guide</h2><p class="lead">Choose a hazard for before, during and after steps.</p>
+ <div class="row" id="gtabs"></div><div id="gout"></div>
+</section>
+
+<section class="pn" id="p-ready">
+ <h2 style="margin-top:0">Emergency kit checklist</h2><p class="lead">Tick items as you pack them. Your ticks stay on this device.</p>
+ <div class="prog"><div id="bar"></div></div><p class="key" id="prog"></p>
+ <ul class="kit" id="kitList"></ul><button class="chip" id="reset" type="button">Reset checklist</button>
+ <h2>Family plan</h2><p class="lead">Fill this in and it is saved on this device.</p>
+ <div class="grid g3">
+  <div class="card"><h3>Meeting point</h3><p class="key">One spot near home, one outside your area.</p><textarea id="f1" rows="3"></textarea></div>
+  <div class="card"><h3>Contact person</h3><p class="key">A relative in another city everyone can call.</p><textarea id="f2" rows="3"></textarea></div>
+  <div class="card"><h3>Practice</h3><p class="key">When will you walk the exit route, with children and elders?</p><textarea id="f3" rows="3"></textarea></div>
+ </div>
+</section>
+
+<section class="pn" id="p-help">
+ <h2 style="margin-top:0">Help and sources</h2><p class="lead">Call these numbers in an emergency.</p>
+ <div class="nums"><div style="background:#d6336c"><b>112</b>All emergencies</div><div style="background:#12805c"><b>108</b>Ambulance</div><div style="background:#e8590c"><b>101</b>Fire</div><div style="background:#1c7ed6"><b>100</b>Police</div></div>
+ <h3 style="margin-top:22px">Official sources for live information</h3>
+ <a class="link" href="https://mausam.imd.gov.in/" target="_blank" rel="noopener">Weather and cyclones (IMD)</a><a class="link" href="https://cwc.gov.in/" target="_blank" rel="noopener">Floods (CWC)</a><a class="link" href="https://sachet.ndma.gov.in/" target="_blank" rel="noopener">Alerts (NDMA SACHET)</a><a class="link" href="https://incois.gov.in/" target="_blank" rel="noopener">Ocean and tsunami (INCOIS)</a><a class="link" href="https://seismo.gov.in/" target="_blank" rel="noopener">Earthquakes (NCS)</a>
+</section>
+<footer>Bharat Alert is a proposed educational project with no government affiliation. It does not replace official warnings or emergency services. Earthquakes cannot be predicted.</footer>
+</main>
+<script>
+const MO=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],LV=["Very low","Low","Medium","High"];
+const ICON={Flood:'<path d="M4 34q5-5 10 0t10 0t10 0t10 0M4 42q5-5 10 0t10 0t10 0t10 0M14 26V16L24 7L34 16V26"/>',Landslide:'<path d="M4 40L44 14M18 30l4 0M28 24l4 0"/><circle cx="14" cy="36" r="3"/><circle cx="26" cy="32" r="3"/><circle cx="36" cy="26" r="3"/>',Cyclone:'<path d="M24 24a3 3 0 0 1 6 0a8 8 0 0 1-16 0a13 13 0 0 1 26 0"/>',Heatwave:'<circle cx="24" cy="24" r="8"/><path d="M24 4v6M24 38v6M4 24h6M38 24h6M10 10l4 4M34 34l4 4M10 38l4-4M34 14l4-4"/>',Drought:'<path d="M4 30h40M10 30l6 12M24 30l-4 8l6 6M38 30l-4 10"/><circle cx="36" cy="12" r="5"/>',Earthquake:'<path d="M3 24h8l5-12l6 24l6-28l6 16h11"/>',Tsunami:'<path d="M4 38C8 12 32 6 38 20C33 18 29 22 32 29M4 38h40"/>'};
+const HZ=Object.keys(ICON),HC={Flood:"#1c7ed6",Landslide:"#8d5a3b",Cyclone:"#0c8599",Heatwave:"#e8590c",Drought:"#b88a00",Earthquake:"#7048e8",Tsunami:"#1b3a8a"};
+const HS={Flood:["https://cwc.gov.in/","CWC flood forecasts"],Cyclone:["https://mausam.imd.gov.in/","IMD cyclone warnings"],Tsunami:["https://incois.gov.in/","INCOIS tsunami alerts"],Earthquake:["https://seismo.gov.in/","NCS earthquake reports"],Landslide:["https://sachet.ndma.gov.in/","NDMA SACHET alerts"],Heatwave:["https://mausam.imd.gov.in/","IMD heat warnings"],Drought:["https://sachet.ndma.gov.in/","NDMA SACHET alerts"]};
+const svg=(n,s="")=>`<svg class="ic" viewBox="0 0 48 48" role="img" aria-label="${n}" ${s}>${ICON[n]}</svg>`;
+const GUIDE={Flood:["Water covering normally dry land after heavy rain or a river overflowing.",["Know your nearest high ground","Keep documents and power banks on upper shelves"],["Never walk or drive through floodwater","Switch off mains power if water enters"],["Drink only boiled or safe water","Wait for an official all-clear before going home"]],
+Landslide:["Soil and rock sliding down a slope, often after long rain.",["Do not build or camp below steep slopes","Watch for cracks, tilting trees or muddy streams"],["Move sideways out of the path, not downhill","Avoid river valleys in heavy rain"],["Stay away from the slide area","Report broken roads and utilities"]],
+Cyclone:["A powerful spinning storm with strong wind, heavy rain and a rising sea.",["Secure loose objects and roofs","Keep a radio, torch, food and water ready"],["Stay indoors away from windows","Leave at once if officials order an evacuation"],["Watch for fallen wires and weak buildings","Stay off the coast until officials say it is safe"]],
+Heatwave:["Days of unusually high temperature that can cause heat stroke.",["Plan outdoor work for early morning or evening","Keep water and ORS at home"],["Drink water often, even if not thirsty","Rest in shade and check on elders and children"],["Call 108 for confusion, fainting or hot dry skin","Keep drinking fluids"]],
+Drought:["A long dry spell with too little rain for water and crops.",["Store water and fix leaking taps","Harvest rainwater when it falls"],["Use water for drinking and cooking first","Reuse washing water for plants"],["Keep saving water until supplies recover","Follow local water-use rules"]],
+Earthquake:["Sudden ground shaking. It cannot be predicted, so preparing ahead matters.",["Fix heavy furniture to walls","Agree an open-space meeting point"],["Drop, cover and hold on under sturdy furniture","Stay away from glass and do not use lifts"],["Expect aftershocks","Leave damaged buildings and check for gas leaks"]],
+Tsunami:["A series of large sea waves, often after an undersea earthquake.",["Know your route to high ground","Learn the signs: strong shaking near the coast, the sea pulling back"],["Move uphill or inland at once, on foot if you can","Do not wait for a siren after strong coastal shaking"],["Stay away until officials say it is safe","More waves can follow the first"]]};
+const RC={North:"#1c7ed6",East:"#12805c",Northeast:"#7048e8",West:"#e8590c",South:"#d6336c",Islands:"#0c8599"};
+// hz order: Flood, Landslide, Cyclone, Heatwave, Drought, Earthquake, Tsunami. Levels 0-3 are simple guides. k = picture style.
+const P={
+"Shimla":{t:"Hill town in the Himalayas",r:"North",k:"m",rain:[60,60,60,50,70,160,420,420,180,40,15,25],temp:[5,6,10,14,18,20,19,18,17,13,9,6],hz:[2,3,0,0,1,2,0],tip:"Avoid hill roads and streams during long, heavy rain."},
+"Delhi":{t:"River plain and big city",r:"North",k:"p",rain:[20,20,15,10,20,70,210,230,120,15,5,10],temp:[14,17,23,29,33,34,31,30,29,25,19,15],hz:[3,0,0,3,1,2,0],tip:"Stay out of flooded underpasses and drink water often in summer."},
+"Dehradun":{t:"Foothill valley below the Himalayas",r:"North",k:"m",rain:[50,60,50,25,70,300,640,640,280,40,10,25],temp:[12,14,19,24,28,28,26,25,24,21,16,12],hz:[3,3,0,1,0,3,0],tip:"Keep away from seasonal streams and slopes in monsoon downpours."},
+"Srinagar":{t:"Kashmir valley with lakes",r:"North",k:"m",rain:[70,70,95,90,70,40,60,60,40,45,25,50],temp:[-1,2,8,13,17,21,24,23,19,13,6,1],hz:[3,2,0,0,0,3,0],tip:"Know where high ground is for floods, and secure heavy furniture against quakes."},
+"Leh":{t:"High-altitude cold desert",r:"North",k:"m",rain:[8,8,10,5,8,5,15,15,10,5,2,5],temp:[-8,-5,1,6,10,14,17,16,11,5,-2,-6],hz:[1,2,0,0,1,3,0],tip:"Sudden cloudbursts are rare but dangerous. Stay off steep valleys when it rains."},
+"Patna":{t:"Ganga river plain",r:"East",k:"p",rain:[15,15,10,10,30,130,300,300,230,60,5,5],temp:[16,19,25,30,32,33,31,30,30,27,21,17],hz:[3,0,0,3,1,3,0],tip:"Know where high ground and a safe shelter are before the monsoon."},
+"Kolkata":{t:"Delta city on the Hooghly",r:"East",k:"p",rain:[15,25,35,55,125,290,330,330,290,140,20,5],temp:[20,23,28,30,31,30,29,29,29,28,24,20],hz:[3,0,3,2,0,2,1],tip:"Waterlogging is common in monsoon. Keep to raised routes and avoid open drains."},
+"Bhubaneswar":{t:"Temple city near the Odisha coast",r:"East",k:"p",rain:[10,25,25,30,70,220,300,310,250,200,60,10],temp:[23,26,30,32,32,30,28,28,28,27,24,22],hz:[3,0,3,3,0,1,1],tip:"Follow cyclone warnings early. Odisha’s evacuation shelters save lives."},
+"Guwahati":{t:"City on the Brahmaputra",r:"Northeast",k:"p",rain:[10,20,60,160,250,330,360,280,240,120,20,5],temp:[16,19,23,25,27,28,29,29,28,26,21,17],hz:[3,3,0,0,0,3,0],tip:"Avoid hill slopes in heavy rain and know your route to higher ground."},
+"Mumbai":{t:"Coastal city",r:"West",k:"c",rain:[1,1,0,2,10,520,710,480,320,70,15,3],temp:[24,25,27,29,30,29,27,27,27,28,27,25],hz:[3,1,2,1,0,1,1],tip:"In heavy monsoon rain, check local advice before you travel."},
+"Panaji":{t:"Goa’s riverside capital on the Arabian Sea",r:"West",k:"c",rain:[0,0,5,25,90,580,900,600,300,120,35,5],temp:[26,26,28,29,30,27,26,26,26,27,27,26],hz:[2,1,1,1,0,0,1],tip:"Rivers swell fast in monsoon. Avoid low-lying roads and rough beaches."},
+"Ahmedabad":{t:"Dry plain city in Gujarat",r:"West",k:"d",rain:[2,1,1,3,12,90,280,240,130,15,5,2],temp:[20,23,28,33,35,34,30,29,30,29,25,21],hz:[2,0,1,3,2,3,0],tip:"Heat action plans matter here. Stay indoors at midday in summer."},
+"Jaisalmer":{t:"Hot desert",r:"West",k:"d",rain:[3,3,3,3,7,25,80,90,30,3,2,2],temp:[16,19,25,31,35,36,34,32,32,28,22,17],hz:[1,0,0,3,3,1,0],tip:"Avoid the midday sun and carry water everywhere."},
+"Chennai":{t:"Coastal city on the Bay of Bengal",r:"South",k:"c",rain:[25,10,5,15,50,50,90,120,120,270,350,140],temp:[25,26,28,31,33,32,31,30,30,28,26,25],hz:[3,0,3,2,1,1,2],tip:"If told to evacuate in a cyclone, go early and take your kit."},
+"Kochi":{t:"Backwater port in Kerala",r:"South",k:"c",rain:[20,25,40,120,330,700,600,400,310,330,200,50],temp:[27,28,29,29,29,27,26,26,27,27,27,27],hz:[3,2,1,1,0,0,1],tip:"Heavy monsoon can flood low areas quickly. Move valuables up and keep to higher roads."},
+"Bengaluru":{t:"Plateau city and tech hub",r:"South",k:"p",rain:[3,5,10,45,110,80,110,140,180,150,60,15],temp:[22,24,27,28,27,25,24,24,24,24,22,21],hz:[2,0,0,1,2,1,0],tip:"Short, intense storms flood roads fast. Avoid underpasses and low streets."},
+"Hyderabad":{t:"Deccan plateau city",r:"South",k:"d",rain:[5,8,15,25,30,95,150,160,150,85,25,5],temp:[23,26,30,33,34,29,27,26,27,26,23,21],hz:[2,0,0,3,2,1,0],tip:"Summers are hot and dry. Drink water often and plan outdoor work early."},
+"Port Blair":{t:"Island in the Andaman Sea",r:"Islands",k:"c",rain:[70,30,30,60,360,480,370,380,430,280,260,140],temp:[26,26,27,28,28,27,27,27,27,27,27,26],hz:[2,2,3,1,0,3,3],tip:"Learn your route to high ground. After strong shaking, go uphill at once."}};
+const NAMES=Object.keys(P),$=s=>document.querySelector(s),sum=a=>a.reduce((x,y)=>x+y,0),mx=a=>a.indexOf(Math.max(...a)),score=n=>sum(P[n].hz);
+let u=0;
+function scene(k,n){
+ const i="g"+(++u),C={m:["#5aa9ff","#ffe3b8"],c:["#ff9d5c","#ffe7a8"],d:["#ffb74d","#fff0c9"],p:["#7cc4ff","#fff0d0"]}[k];
+ const B={m:'<path d="M0 150L70 55L110 105L175 35L250 125L310 70L400 150z" fill="#5b6b9a"/><path d="M175 35l-18 24l12-4l8 10l8-10l12 4z" fill="#fff"/><path d="M0 150L90 95L160 135L270 85L400 150z" fill="#2f4a7a"/><path d="M0 160V140Q100 125 200 140T400 135V160z" fill="#1f7a4d"/>',
+ c:'<path d="M0 100Q50 90 100 100T200 100T300 100T400 100V160H0z" fill="#1c9ad6"/><path d="M0 125Q50 115 100 125T200 125T300 125T400 125V160H0z" fill="#0b6fa8"/><path d="M0 145Q60 135 120 145T250 145T400 140V160H0z" fill="#f2d49b"/><path d="M330 145Q326 110 336 80M336 80q-24-4-34 10M336 80q20-10 36 2M336 80q-8-18-26-18M336 80q14-18 32-14" fill="none" stroke="#1f5d3a" stroke-width="4" stroke-linecap="round"/>',
+ d:'<path d="M0 130Q80 90 170 125T330 110T400 125V160H0z" fill="#e8a64c"/><path d="M0 150Q100 120 200 148T400 138V160H0z" fill="#c9852b"/><path d="M290 135V112M290 118l-8-6M290 124l8-8" stroke="#2f6b3a" stroke-width="5" stroke-linecap="round"/>',
+ p:'<path d="M20 130V80h22v50M52 130V55h28v75M90 130V92h20v50M120 130V70h26v60M160 130V100h24v30M200 130V48h18v82M228 130V85h30v45M270 130V66h22v64M300 130V96h28v34M338 130V76h24v54" fill="#3b4a7a"/><path d="M0 160V138Q100 124 200 138T400 134V160z" fill="#2b8a6e"/><path d="M0 152Q100 142 200 152T400 148" fill="none" stroke="#7fd0ff" stroke-width="5"/>'}[k];
+ return `<svg viewBox="0 0 400 160" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration of ${n}"><defs><linearGradient id="${i}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${C[0]}"/><stop offset="1" stop-color="${C[1]}"/></linearGradient></defs><rect width="400" height="160" fill="url(#${i})"/><circle cx="${k=="c"?90:310}" cy="${k=="p"?36:48}" r="20" fill="#fff6c9" opacity=".95"/>${B}</svg>`;
+}
+function chart(L){
+ const W=400,H=230,l=40,rt=36,tp=14,b=26,pw=W-l-rt,ph=H-tp-b,rm=Math.max(50,Math.ceil(Math.max(...L.flatMap(x=>x.rain))/50)*50),all=L.flatMap(x=>x.temp),lo=Math.floor(Math.min(...all)/5)*5-5,hi=Math.ceil(Math.max(...all)/5)*5+5,bw=pw/12,w=(bw-6)/L.length;
+ let s=`<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Monthly rainfall bars and temperature line">`;
+ for(let g=0;g<=4;g++){const y=tp+ph*g/4;s+=`<line class="gr" x1="${l}" x2="${W-rt}" y1="${y}" y2="${y}"/>`}
+ s+=`<text x="2" y="${tp+4}">${rm} mm</text><text x="2" y="${tp+ph}">0</text><text x="${W-rt+4}" y="${tp+4}">${hi}°C</text><text x="${W-rt+4}" y="${tp+ph}">${lo}°C</text>`;
+ MO.forEach((m,i)=>{s+=`<text x="${l+i*bw+bw/2-3}" y="${H-8}">${m[0]}</text>`;L.forEach((x,j)=>{const h=x.rain[i]/rm*ph;s+=`<rect x="${l+i*bw+3+j*w}" y="${tp+ph-h}" width="${w-1}" height="${h}" rx="2" fill="${x.c}"/>`})});
+ L.forEach(x=>{const p=x.temp.map((v,i)=>[l+i*bw+bw/2,tp+ph-(v-lo)/(hi-lo)*ph]);s+=`<polyline class="t" stroke="${x.c2}" points="${p.join(" ")}"/>`+p.map(q=>`<circle cx="${q[0]}" cy="${q[1]}" r="3" fill="var(--card)" stroke="${x.c2}" stroke-width="2"/>`).join("")});
+ return s+"</svg>";
+}
+const ser=(n,a)=>({rain:P[n].rain,temp:P[n].temp,c:a?"#3b82f6":"#f59e0b",c2:a?"#1d4ed8":"#b45309"});
+const order=n=>P[n].hz.map((v,i)=>[HZ[i],v]).sort((a,b)=>b[1]-a[1]);
+const pips=v=>`<div class="pips">${[1,2,3].map(k=>`<i class="pip" style="${v>=k?"background:"+["","#2f9e44","#f08c00","#e03131"][v]:""}"></i>`).join("")}<span>${LV[v]}</span></div>`;
+function guide(k){const g=GUIDE[k],L=(t,c,a)=>`<div class="card gc ${c}"><h4>${t}</h4><ul>${a.map(x=>`<li>${x}</li>`).join("")}</ul></div>`;
+ return `<div class="gh" style="background:linear-gradient(135deg,${HC[k]},#1b2a5e)">${svg(k)}<div><h3>${k}</h3><p>${g[0]}</p></div></div><div class="grid g3">${L("BEFORE","bef",g[1])}${L("DURING","dur",g[2])}${L("AFTER","aft",g[3])}</div>`}
+function cityCard(n){const d=P[n];return `<button class="cc" data-c="${n}"><div class="pic">${scene(d.k,n)}</div><div class="cb"><span class="rg" style="background:${RC[d.r]}">${d.r}</span><h3>${n}</h3><p>${d.t}</p><div class="mini">${order(n).filter(o=>o[1]>=3).map(o=>svg(o[0],`style="background:${HC[o[0]]}"`)).join("")}</div></div></button>`}
+
+// Tabs
+const TABS=[["home","Home"],["cities","Places"],["compare","Compare"],["guide","Disaster guide"],["ready","Get ready"],["help","Help"]];
+$("#tabs").innerHTML=TABS.map(t=>`<button role="tab" type="button" data-go="${t[0]}" id="t-${t[0]}">${t[1]}</button>`).join("");
+function show(n){if(!TABS.some(t=>t[0]==n))n="home";TABS.forEach(t=>{$("#p-"+t[0]).classList.toggle("on",t[0]==n);$("#t-"+t[0]).setAttribute("aria-selected",t[0]==n)});scrollTo(0,0)}
+function go(n){try{location.hash=n}catch(e){}show(n)}
+addEventListener("hashchange",()=>show(location.hash.slice(1)));
+document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g)return go(g.dataset.go);const c=e.target.closest("[data-c]");if(c)openCity(c.dataset.c);const h=e.target.closest("[data-h]");if(h){gz=h.dataset.h;renderGuide();go("guide")}});
+
+// Home
+$("#mon").innerHTML=MO.map((m,i)=>`<option value="${i}">${m}</option>`).join("");$("#mon").value=new Date().getMonth();
+function radar(){const m=+$("#mon").value;
+ const rows=NAMES.map(n=>{const d=P[n],t=[];
+  if(d.rain[m]>=250&&d.hz[0]>=2)t.push(["Flood watch",HC.Flood]);
+  if(d.rain[m]>=250&&d.hz[1]>=2)t.push(["Landslide watch",HC.Landslide]);
+  if([3,4,5,9,10,11].includes(m)&&d.hz[2]>=2)t.push(["Cyclone season",HC.Cyclone]);
+  if(d.temp[m]>=32&&d.hz[3]>=2)t.push(["Heat risk",HC.Heatwave]);
+  return [n,t]}).sort((a,b)=>b[1].length-a[1].length);
+ $("#rad").innerHTML=rows.map(([n,t])=>`<button data-c="${n}"><b>${n}</b> <span class="key">${P[n].r}</span><br>${t.length?t.map(x=>`<span class="tg" style="background:${x[1]}">${x[0]}</span>`).join(""):'<span class="key">Quiet month, typically</span>'}</button>`).join("")}
+$("#mon").onchange=radar;radar();
+$("#tiles").innerHTML=HZ.map(h=>`<button class="tile" data-h="${h}" style="background:${HC[h]}">${svg(h)}${h}</button>`).join("");
+
+// Cities
+let sel="",reg="All",hf="";
+$("#hf").innerHTML='<option value="">Any hazard</option>'+HZ.map(h=>`<option>${h}</option>`).join("");
+$("#rchips").innerHTML=["All",...Object.keys(RC)].map(r=>`<button class="chip" type="button" data-r="${r}">${r}</button>`).join("");
+function renderCities(){
+ $("#cfilters").style.display=sel?"none":"";
+ document.querySelectorAll("[data-r]").forEach(c=>c.classList.toggle("on",c.dataset.r==reg));
+ if(!sel){const q=$("#q").value.trim().toLowerCase(),f=hf?HZ.indexOf(hf):-1;
+  const L=NAMES.filter(n=>n.toLowerCase().includes(q)&&(reg=="All"||P[n].r==reg)&&(f<0||P[n].hz[f]>=2));
+  $("#cout").innerHTML=L.length?`<div class="cg">${L.map(cityCard).join("")}</div>`:'<div class="card">No places match. Try clearing a filter.</div>';return}
+ const n=sel,d=P[n],w=mx(d.rain),h=mx(d.temp),top=order(n).filter(o=>o[1]>=2),col=RC[d.r];
+ $("#cout").innerHTML=`<button class="chip" data-back>← All places</button>
+ <div class="banner">${scene(d.k,n)}<div><span class="rg" style="background:${col}">${d.r}</span><h2>${n}</h2>${d.t}</div></div>
+ <div class="stats"><div class="stat" style="background:#1c7ed6"><b>${sum(d.rain).toLocaleString("en-IN")} mm</b><span>Typical rain in a year</span></div><div class="stat" style="background:#0c8599"><b>${MO[w]}</b><span>Wettest month (${d.rain[w]} mm)</span></div><div class="stat" style="background:#e8590c"><b>${MO[h]}</b><span>Warmest month (${d.temp[h]}°C average)</span></div><div class="stat" style="background:#7048e8"><b>${Math.min(...d.temp)}°C</b><span>Coolest month average</span></div></div>
+ <div class="grid g2"><div>${chart([ser(n,1)])}<p class="key">Bars: rainfall each month. Dashed line: average temperature. Rounded long-term values.</p></div>
+ <div class="card"><h3>Disasters this place is prone to</h3>${order(n).map(o=>`<div class="risk">${svg(o[0],`style="background:${HC[o[0]]}"`)}<b>${o[0]}</b>${pips(o[1])}</div>`).join("")}<p class="key">A simple guide for learning, not an official hazard map.</p></div></div>
+ <div class="note"><b>Top tip for ${n}.</b> ${d.tip}</div>
+ <button class="btn" style="background:var(--navy);color:#fff" data-cmp="${n}">Compare ${n} with another place</button>
+ <h2>What people here should do</h2>${top.map(o=>guide(o[0])+"<br>").join("")}`}
+function openCity(n){sel=n;renderCities();go("cities")}
+$("#q").oninput=renderCities;$("#hf").onchange=e=>{hf=e.target.value;renderCities()};
+document.addEventListener("click",e=>{const r=e.target.closest("[data-r]");if(r){reg=r.dataset.r;renderCities()}if(e.target.closest("[data-back]")){sel="";renderCities();scrollTo(0,0)}const c=e.target.closest("[data-cmp]");if(c){$("#ca").value=c.dataset.cmp;if($("#cb").value==c.dataset.cmp)$("#cb").value=NAMES.find(x=>x!=c.dataset.cmp);compare();go("compare")}});
+
+// Compare
+const opts=NAMES.map(n=>`<option>${n}</option>`).join("");$("#ca").innerHTML=opts;$("#cb").innerHTML=opts;$("#ca").value="Mumbai";$("#cb").value="Jaisalmer";
+function compare(){const a=$("#ca").value,b=$("#cb").value,f=n=>{const d=P[n];return [sum(d.rain).toLocaleString("en-IN")+" mm",`${MO[mx(d.rain)]} (${Math.max(...d.rain)} mm)`,`${MO[mx(d.temp)]} (${Math.max(...d.temp)}°C)`,Math.min(...d.temp)+"°C",order(n)[0][0],score(n)+" of 21"]};
+ const A=f(a),B=f(b),lab=["Rain in a year","Wettest month","Warmest month","Coolest month avg","Biggest hazard","Risk score"];
+ $("#cmp").innerHTML=`<div class="lg"><span><i style="background:#3b82f6"></i>${a}</span><span><i style="background:#f59e0b"></i>${b}</span></div>${chart([ser(a,1),ser(b,0)])}<p class="key">Bars: rainfall. Dashed lines: temperature.</p><table><tr><th></th><th>${a}</th><th>${b}</th></tr>${lab.map((l,i)=>`<tr><td><b>${l}</b></td><td>${A[i]}</td><td>${B[i]}</td></tr>`).join("")}</table>`}
+function rank(){const m=$("#met").value,v=n=>m=="rain"?sum(P[n].rain):m=="hot"?Math.max(...P[n].temp):score(n),un=m=="rain"?" mm":m=="hot"?"°C":"/21";
+ const rows=[...NAMES].sort((x,y)=>v(y)-v(x)),top=Math.max(...rows.map(v));
+ $("#rank").innerHTML=rows.map(n=>`<div class="br"><span>${n}</span><div style="width:${Math.max(3,v(n)/top*100)}%;background:${RC[P[n].r]}"></div><b>${v(n).toLocaleString("en-IN")}${un}</b></div>`).join("")+`<div class="lg">${Object.entries(RC).map(([k,c])=>`<span><i style="background:${c}"></i>${k}</span>`).join("")}</div>`}
+$("#ca").onchange=$("#cb").onchange=compare;$("#met").onchange=rank;compare();rank();
+
+// Guide
+let gz="Flood";
+function renderGuide(){$("#gtabs").innerHTML=HZ.map(h=>`<button class="chip ${h==gz?"on":""}" type="button" data-g="${h}">${h}</button>`).join("");
+ const f=HZ.indexOf(gz),L=NAMES.filter(n=>P[n].hz[f]>=2).sort((a,b)=>P[b].hz[f]-P[a].hz[f]);
+ $("#gout").innerHTML=guide(gz)+`<h3 style="margin-top:20px">Places on this site most prone to ${gz.toLowerCase()}</h3><div class="row" style="margin-top:8px">${L.length?L.map(n=>`<button class="chip" data-c="${n}" style="border-color:${HC[gz]}">${n}${P[n].hz[f]==3?" ●":""}</button>`).join(""):'<span class="key">None rated medium or high.</span>'}</div><p class="key">● = high. <a href="${HS[gz][0]}" target="_blank" rel="noopener" style="color:var(--pri);font-weight:700">${HS[gz][1]}</a></p>`}
+document.addEventListener("click",e=>{const g=e.target.closest("[data-g]");if(g){gz=g.dataset.g;renderGuide()}});
+
+// Kit and plan
+const KIT=["Drinking water for 3 days (about 3 litres per person per day)","Dry food that needs no cooking","Torch, spare batteries and a power bank","First-aid kit and regular medicines","ORS packets and water purification tablets","Battery or hand-crank radio","Copies of ID and important papers in a waterproof bag","Cash in small notes","Whistle to signal for help","Warm clothes and a rain poncho","Written list of emergency numbers","Charged phone with official alert apps installed"];
+let ticks=[];try{ticks=JSON.parse(localStorage.getItem("ba_kit")||"[]")}catch(e){}
+const save=()=>{try{localStorage.setItem("ba_kit",JSON.stringify(ticks))}catch(e){}};
+function kit(){$("#kitList").innerHTML=KIT.map((k,i)=>`<li class="${ticks.includes(i)?"done":""}"><label><input type="checkbox" data-i="${i}" ${ticks.includes(i)?"checked":""}><span>${k}</span></label></li>`).join("");
+ $("#prog").textContent=`${ticks.length} of ${KIT.length} packed`;$("#bar").style.width=ticks.length/KIT.length*100+"%";
+ document.querySelectorAll("#kitList input").forEach(x=>x.onchange=()=>{const i=+x.dataset.i;ticks=x.checked?[...ticks,i]:ticks.filter(t=>t!==i);save();kit()})}
+$("#reset").onclick=()=>{ticks=[];save();kit()};
+["f1","f2","f3"].forEach(id=>{try{$("#"+id).value=localStorage.getItem("ba_"+id)||""}catch(e){}$("#"+id).oninput=e=>{try{localStorage.setItem("ba_"+id,e.target.value)}catch(x){}}});
+$("#theme").onclick=()=>{const r=document.documentElement,d=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;r.dataset.theme=d?"light":"dark"};
+renderCities();renderGuide();kit();show(location.hash.slice(1));
+</script>
+</body>
+</html>
